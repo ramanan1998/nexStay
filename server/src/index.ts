@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import { connectDB } from "../configs/dbconfig";
 import userRoutes from "./routes/users";
+import authRoutes from "./routes/auth";
 
 connectDB();
 
@@ -20,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 // it enables CORS (cross-origin resource sharing). In order for your server to be accessible by other origins (domains).
 app.use(cors());
 
-
+app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 
 app.listen(5000, () => {
