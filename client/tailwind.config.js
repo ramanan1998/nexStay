@@ -12,10 +12,15 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "10rem",
       screens: {
         "2xl": "1400px",
       },
+      padding: {
+        md: '10rem',
+        lg: '10rem',
+        xl: '10rem',
+        "2xl": "10rem"
+      }
     },
     extend: {
       keyframes: {
