@@ -1,5 +1,5 @@
+import { Button } from "@nextui-org/react"
 import { Link } from "react-router-dom"
-import { Button } from "../ui/button"
 
 function Navbar() {
   return (
@@ -10,10 +10,10 @@ function Navbar() {
             </span>
 
             <div className="space-x-2">
-              <Button>
+              <Button variant="faded">
                 Register
               </Button>
-              <Button>
+              <Button variant="faded">
                   Sign In
               </Button>
             </div>
