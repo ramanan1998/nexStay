@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import { UserType } from "../../types";
+import { UserType } from "../types";
 
 const UserSchema = new mongoose.Schema({
     firstname: { type: String, required: true },
