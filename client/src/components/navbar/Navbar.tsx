@@ -11,7 +11,9 @@ function Navbar() {
 
             <div className="space-x-2">
               <Button variant="faded">
-                Register
+                <Link to="/register">
+                  Register
+                </Link>
               </Button>
               <Button variant="faded">
                   Sign In

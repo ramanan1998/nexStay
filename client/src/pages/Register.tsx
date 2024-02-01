@@ -1,19 +1,40 @@
 import { Icons } from "@/assets/icons"
-import useToggle from "@/lib/hooks/useToggle";
+import useToggle from "@/hooks/useToggle";
 import { Button, Checkbox, Input } from "@nextui-org/react"
 import { Link } from "react-router-dom"
 import { useForm } from "react-hook-form";
 import { RegisterFormType } from "@/types";
 import { DevTool } from "@hookform/devtools";
+import { useMutation } from "@tanstack/react-query";
+import { registerUser } from "@/apis/api-client";
+import { useAppContext } from "@/contexts/AppContext";
 
 function Register() {
 
+  const { showToast } = useAppContext();
   const { register, control, handleSubmit, watch, formState: { errors }, } = useForm<RegisterFormType>();
   const [ isPasswordVisible, togglePasswordVisibility ] = useToggle();
   const [ isConfirmPasswordVisible, toggleConfirmPasswordVisibility ] = useToggle();
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: registerUser,
+    onSuccess: (response) => {
+        console.log(response);
+        showToast({
+            type: "SUCCESS",
+            message: "Registration success"
+        })
+    },
+    onError: (error) => {
+        showToast({
+            type: "ERROR",
+            message: error.message
+        })
+    }
+  })
+
   const createUser = handleSubmit((data) => {
-    alert(JSON.stringify(data))
+    mutate(data)
   })
 
   return (
@@ -150,7 +171,14 @@ function Register() {
                     <Link to="/login" className="text-sm font-bold text-blue-800">Already have an account? Sign In</Link>
                 </div>
             </div>
-            <Button type="submit" size="sm" className="bg-blue-800 text-white hover:bg-blue-900 w-full">Submit</Button>
+            <Button 
+                type="submit" 
+                size="sm" 
+                className="bg-blue-800 text-white hover:bg-blue-900 w-full"
+                isLoading={isPending}
+            >
+                Submit
+            </Button>
             <div className="flex flex-row items-center mt-4 gap-2">
                 <div className="w-full h-[1px] bg-slate-300"></div>
                 <span className="text-sm w-full text-nowrap">or use one of these options</span>
