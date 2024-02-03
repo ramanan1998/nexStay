@@ -1,18 +1,33 @@
+import Toast from "@/components/toast/Toast";
 import { ToastMessage } from "@/types"
-import { ReactNode, createContext, useContext } from "react"
+import { ReactNode, createContext, useCallback, useContext, useState } from "react"
 
 
 type AppContextType = {
-    showToast: (toastMessage: ToastMessage) => void
+    showToast: (toastMessage: ToastMessage) => void,
+    closeToast: () => void
 }
 
 const AppContext = createContext<AppContextType | null>(null);
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
+    const [ toast, setToast ] = useState<ToastMessage | null>(null);
+
+    const closeToast = useCallback(() => setToast(null), []);
+
     return(
-        <AppContext.Provider value={{showToast: (toastMessage: ToastMessage) => console.log(toastMessage)}}>
+        <AppContext.Provider 
+            value={{
+                showToast: (toastMessage) => setToast(toastMessage),
+                closeToast: closeToast
+            }}
+        >
             {children}
+            {
+                toast && 
+                <Toast type={toast?.type} title={toast?.title} message={toast?.message}/>
+            }
         </AppContext.Provider>
     )
 }

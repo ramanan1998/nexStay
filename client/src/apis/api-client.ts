@@ -17,5 +17,5 @@ export const registerUser = async (formdata: RegisterFormType) => {
         throw new Error(json.message);
     }
 
-    return response
+    return json;
 }

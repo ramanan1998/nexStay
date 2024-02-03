@@ -13,6 +13,7 @@
     "@nextui-org/react": "^2.2.9",
     "@tanstack/react-query": "^5.18.0",
     "framer-motion": "^11.0.3",
+    "lucide-react": "^0.321.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.3",

@@ -6,8 +6,10 @@ function App() {
 
   return (
     <Routes>
-        <Route path="/" element={<Layout/>}/>
-        <Route path="/search" element={<Layout/>}/>
+        <Route path="/" element={<Layout/>}>
+          <Route index element={<h1>Hello</h1>}/>
+          <Route path="/search" element={<h1>Search</h1>}/>
+        </Route>
         <Route path="/register" element={<Register/>}/>
         <Route path="*" element={<Navigate to="/"/>}/>
     </Routes>

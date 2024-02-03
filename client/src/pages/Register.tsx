@@ -1,8 +1,8 @@
 import { Icons } from "@/assets/icons"
 import useToggle from "@/hooks/useToggle";
 import { Button, Checkbox, Input } from "@nextui-org/react"
-import { Link } from "react-router-dom"
-import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom"
+import { useForm, Controller } from "react-hook-form";
 import { RegisterFormType } from "@/types";
 import { DevTool } from "@hookform/devtools";
 import { useMutation } from "@tanstack/react-query";
@@ -12,22 +12,25 @@ import { useAppContext } from "@/contexts/AppContext";
 function Register() {
 
   const { showToast } = useAppContext();
-  const { register, control, handleSubmit, watch, formState: { errors }, } = useForm<RegisterFormType>();
+  const navigate = useNavigate();
+  const { register, control, handleSubmit, watch, formState: { errors }, } = useForm<RegisterFormType>({ defaultValues: { rememberMe: false } });
   const [ isPasswordVisible, togglePasswordVisibility ] = useToggle();
   const [ isConfirmPasswordVisible, toggleConfirmPasswordVisibility ] = useToggle();
 
   const { mutate, isPending } = useMutation({
     mutationFn: registerUser,
     onSuccess: (response) => {
-        console.log(response);
+        navigate("/");
         showToast({
             type: "SUCCESS",
-            message: "Registration success"
+            title: "Yayy!! Registration Success",
+            message: response.message
         })
     },
     onError: (error) => {
         showToast({
             type: "ERROR",
+            title: "Uh oh!! Registration Failed",
             message: error.message
         })
     }
@@ -158,8 +161,19 @@ function Register() {
                 <p className="text-xs mt-1 font-medium text-red-500">{errors?.confirmPassword?.message}</p>
             </div>
             <div className="flex items-center justify-between mb-5">
-                <div className="flex items-center space-x-2">
-                    <Checkbox size="sm" id="remember-me" />
+                <div className="flex items-center">
+                    <Controller
+                        control={control}
+                        name="rememberMe"
+                        render={({ field }) => (
+                            <Checkbox 
+                                size="md" 
+                                id="remember-me"
+                                checked={field.value}
+                                onChange={() => field.onChange(!field.value)}
+                            />
+                        )}
+                    />
                     <label
                         htmlFor="remember-me"
                         className="block text-sm font-medium text-gray-900 dark:text-white leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
