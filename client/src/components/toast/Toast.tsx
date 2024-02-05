@@ -32,7 +32,8 @@ function Toast(props: ToastMessage) {
   return (
     <motion.div
       initial={{
-        y: 500
+        y: 500,
+        
       }}
       animate={{
         y: 0

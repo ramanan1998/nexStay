@@ -1,7 +1,11 @@
+import { useAppContext } from "@/contexts/AppContext"
 import { Button } from "@nextui-org/react"
 import { Link } from "react-router-dom"
 
 function Navbar() {
+
+  const { isLoggedIn } = useAppContext();
+
   return (
     <nav className="bg-blue-800 pb-12 pt-5 px-2">
         <div className="container mx-auto flex items-center justify-between">
@@ -9,16 +13,35 @@ function Navbar() {
                 <Link to="/">nexStay</Link>
             </span>
 
-            <div className="space-x-2">
-              <Button variant="faded">
-                <Link to="/register">
-                  Register
+            {isLoggedIn ? (
+              <div className="space-x-10">
+                <Link to="/">
+                  <span className="text-1xl text-white font-medium tracking-tight">
+                    My Hotels
+                  </span>
                 </Link>
-              </Button>
-              <Button variant="faded">
-                  Sign In
-              </Button>
-            </div>
+                <Link to="/">
+                  <span className="text-1xl text-white font-medium tracking-tight">
+                    My Bookings
+                  </span>
+                </Link>
+                <Button variant="faded">
+                    Sign Out
+                </Button>
+              </div>
+            ) : (
+              <div className="space-x-2">
+                <Button variant="faded">
+                  <Link to="/register">
+                    Register
+                  </Link>
+                </Button>
+                <Button variant="faded">
+                    Sign In
+                </Button>
+              </div>
+            )}
+
         </div>  
     </nav>
   )

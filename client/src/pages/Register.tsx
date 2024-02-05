@@ -20,15 +20,15 @@ function Register() {
   const { mutate, isPending } = useMutation({
     mutationFn: registerUser,
     onSuccess: (response) => {
-        navigate("/");
         showToast({
             type: "SUCCESS",
             title: "Yayy!! Registration Success",
             message: response.message
         })
+        return navigate("/");
     },
     onError: (error) => {
-        showToast({
+        return showToast({
             type: "ERROR",
             title: "Uh oh!! Registration Failed",
             message: error.message
