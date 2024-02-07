@@ -15,7 +15,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
     console.log(token);
     
     if(!token){
-        return res.status(401).json({ method: "Unauthorized user" });
+        return res.status(401).json({ message: "unauthorized user" });
     }
 
     try{

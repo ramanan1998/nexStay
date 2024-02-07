@@ -28,13 +28,13 @@ router.post("/login", validateLoginBody, async (req: Request, res: Response) => 
         const isUserExist = await userModel.findOne({ email });
 
         if(!isUserExist){
-            return res.status(400).json({ message: "Invalid user credentials" });
+            return res.status(400).json({ message: "Email does not exist" });
         }
 
         const isPasswordValid = await bcrypt.compare(password, isUserExist.password);
 
         if(!isPasswordValid){
-            return res.status(400).json({ message: "Invalid user credentials" });
+            return res.status(400).json({ message: "Wrong password" });
         }
 
         const token = jwt.sign({ userId: isUserExist.id }, process.env.JWT_SECRET_KEY as string, { expiresIn: "1d" });
@@ -55,6 +55,14 @@ router.post("/login", validateLoginBody, async (req: Request, res: Response) => 
 
 router.get("/validate-token", verifyToken, (req: Request, res: Response) => {
     res.status(200).send({ userId: req.userId })
+})
+
+router.get("/logout", (req: Request, res: Response) => {
+    res.cookie("authToken", "", {
+        expires: new Date(0)
+    })
+
+    res.status(200).send({ message: "Signout successful" })
 })
 
 export default router;
