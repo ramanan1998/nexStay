@@ -19,8 +19,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
     const closeToast = useCallback(() => setToast(null), []);
 
-    const { isError } = useQuery({
-        queryKey: [ "validateTken" ],
+    const { isSuccess } = useQuery({
+        queryKey: [ "validateToken" ],
         queryFn: validateToken,
         retry: 0
     })
@@ -30,7 +30,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
             value={{
                 showToast: (toastMessage) => setToast(toastMessage),
                 closeToast: closeToast,
-                isLoggedIn: !isError
+                isLoggedIn: isSuccess
             }}
         >
             {children}

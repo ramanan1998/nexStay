@@ -1,25 +1,24 @@
 import { Icons } from "@/assets/icons"
 import useToggle from "@/hooks/useToggle";
-import { Button, Checkbox, Input } from "@nextui-org/react"
+import { Button, Input } from "@nextui-org/react"
 import { Link, useNavigate } from "react-router-dom"
-import { useForm, Controller } from "react-hook-form";
-import { RegisterFormType } from "@/types";
+import { useForm } from "react-hook-form";
+import { SignInFormType } from "@/types";
+import { signInUser } from "@/apis/api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { registerUser } from "@/apis/api-client";
 import { useAppContext } from "@/contexts/AppContext";
 
-function Register() {
+function SignIn() {
 
   const { showToast } = useAppContext();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { register, control, handleSubmit, watch, formState: { errors }, } = useForm<RegisterFormType>({ defaultValues: { rememberMe: false } });
+  const { register, handleSubmit, formState: { errors }, } = useForm<SignInFormType>();
   const [ isPasswordVisible, togglePasswordVisibility ] = useToggle();
-  const [ isConfirmPasswordVisible, toggleConfirmPasswordVisibility ] = useToggle();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: registerUser,
-    onSuccess: async (response) => {
+    mutationFn: signInUser,
+    onSuccess: async(response) => {
 
         await queryClient.invalidateQueries({
             queryKey: [ "validateToken" ]
@@ -27,7 +26,7 @@ function Register() {
 
         showToast({
             type: "SUCCESS",
-            title: "Yayy!! Registration Success",
+            title: "Yayy! You are back!",
             message: response.message
         })
         return navigate("/");
@@ -35,7 +34,7 @@ function Register() {
     onError: (error) => {
         return showToast({
             type: "ERROR",
-            title: "Uh oh!! Registration Failed",
+            title: "Uh oh! Sign In Failed",
             message: error.message
         })
     }
@@ -47,44 +46,8 @@ function Register() {
 
   return (
     <div className="flex flex-col gap-3 items-center min-h-screen">
-        <h1 className="text-2xl font-bold mb-5 mt-5">Sign in or create an account</h1>
+        <h1 className="text-2xl font-bold mb-5 mt-5">Sign in to your account</h1>
         <form className="w-full md:w-1/3 mx-auto px-2" onSubmit={createUser}>
-            <div className="mb-5 flex flex-col md:flex-row gap-2">
-                <div className="w-full">
-                    <label htmlFor="firstname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your first name</label>
-                    <Input 
-                        size="sm"
-                        type="text" 
-                        id="firstname" 
-                        placeholder="Bruce" 
-                        required
-                        {...register("firstname", {
-                            required: {
-                                value: true,
-                                message: "first name is required"
-                            }
-                        })} 
-                    />
-                    <p className="text-xs mt-1 font-medium text-red-500">{errors?.firstname?.message}</p>
-                </div>
-                <div className="w-full">
-                    <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your last name</label>
-                    <Input 
-                        size="sm"
-                        type="text" 
-                        id="lastname" 
-                        placeholder="Wayne" 
-                        required
-                        {...register("lastname", {
-                            required: {
-                                value: true,
-                                message: "last name is required"
-                            }
-                        })}  
-                    />
-                    <p className="text-xs mt-1 font-medium text-red-500">{errors?.lastname?.message}</p>
-                </div>
-            </div>
             <div className="mb-5">
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                 <Input 
@@ -136,38 +99,9 @@ function Register() {
                 />
                 <p className="text-xs mt-1 font-medium text-red-500">{errors?.password?.message}</p>
             </div>
-            <div className="mb-5">
-                <label htmlFor="confirm-password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
-                <Input
-                    size="sm" 
-                    id="confirm-password" 
-                    required 
-                    type={isConfirmPasswordVisible ? "text" : "password"} 
-                    endContent={
-                        <button className="focus:outline-none" type="button" onClick={():void => toggleConfirmPasswordVisibility()}>
-                            {isConfirmPasswordVisible ? (
-                                <Icons.EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                            ) : (
-                                <Icons.EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                            )}
-                        </button>
-                    }
-                    {...register("confirmPassword", {
-                        validate: (value) => {
-                            if(!value){
-                                return "confirm password is required"
-                            }else if(watch("password") !== value){
-                                return "passwords do not match"
-                            }
-                        }
-                    })} 
-                    
-                />
-                <p className="text-xs mt-1 font-medium text-red-500">{errors?.confirmPassword?.message}</p>
-            </div>
             <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center">
-                    <Controller
+                    {/* <Controller
                         control={control}
                         name="rememberMe"
                         render={({ field }) => (
@@ -184,15 +118,15 @@ function Register() {
                         className="block text-sm font-medium text-gray-900 dark:text-white leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     >
                         Remember me
-                    </label>
+                    </label> */}
                 </div>
                 <div>
-                    <Link to="/sign-in" className="text-sm font-bold text-blue-800 hover:underline">Already have an account? Sign In</Link>
+                    <Link to="/register" className="text-sm font-bold text-blue-800 hover:underline">Don't have an account? Register</Link>
                 </div>
             </div>
             <Button 
                 type="submit" 
-                size="sm" 
+                size="md" 
                 className="bg-blue-800 text-white hover:bg-blue-900 w-full"
                 isLoading={isPending}
             >
@@ -219,4 +153,4 @@ function Register() {
   )
 }
 
-export default Register
+export default SignIn

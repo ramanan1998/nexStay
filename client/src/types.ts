@@ -1,5 +1,3 @@
-
-
 export type RegisterFormType = {
     firstname: string,
     lastname: string,
@@ -7,6 +5,11 @@ export type RegisterFormType = {
     password: string,
     confirmPassword: string,
     rememberMe: boolean
+}
+
+export type SignInFormType = {
+    email: string,
+    password: string
 }
 
 export type ToastMessage = {

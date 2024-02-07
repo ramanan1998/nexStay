@@ -1,6 +1,7 @@
 import { useAppContext } from "@/contexts/AppContext"
 import { Button } from "@nextui-org/react"
 import { Link } from "react-router-dom"
+import SignoutButton from "./SignoutButton";
 
 function Navbar() {
 
@@ -25,20 +26,21 @@ function Navbar() {
                     My Bookings
                   </span>
                 </Link>
-                <Button variant="faded">
-                    Sign Out
-                </Button>
+                <SignoutButton/>
               </div>
             ) : (
               <div className="space-x-2">
                 <Button variant="faded">
                   <Link to="/register">
-                    Register
+                      Register
                   </Link>
                 </Button>
                 <Button variant="faded">
-                    Sign In
+                  <Link to="/sign-in">
+                      Sign In
+                  </Link>
                 </Button>
+                
               </div>
             )}
 
