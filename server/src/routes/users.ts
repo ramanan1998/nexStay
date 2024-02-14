@@ -1,7 +1,6 @@
-import express, { Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import { userModel } from "../models/user";
-import { check, validationResult } from "express-validator";
+import express from "express";
+import { check } from "express-validator";
+import { register } from "../controllers/users-controller";
 
 const router = express.Router();
 
@@ -15,41 +14,6 @@ const validateRegisterBody = [
     check("password", "Password with 6 or more characters required").isLength({ min: 6 }),
 ]
 
-router.post("/register", validateRegisterBody, async (req: Request, res: Response) => {
-
-    const bodyValidatedArray = validationResult(req);
-
-    if(!bodyValidatedArray.isEmpty()){
-        return res.status(400).json({ message: bodyValidatedArray.array() })
-    }
-    try{
-
-        const { email } = req.body;
-
-        const isEmailExists = await userModel.findOne({ email });
-
-        console.log(isEmailExists)
-
-        if(isEmailExists){
-            return res.status(400).json({ message: "email already exists" });
-        }
-
-        const createUser = await userModel.create(req.body);
-
-        const token = jwt.sign({ userId: createUser.id }, process.env.JWT_SECRET_KEY as string, { expiresIn: "1d" });
-
-        res.cookie("authToken", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 86400000
-        });
-
-        return res.status(200).json({ message: "User Registered successfully" });
-
-    }catch(error){
-        console.log(error);
-        res.status(500).send({ message: "internal server error" });
-    }
-})
+router.post("/register", validateRegisterBody, register)
 
 export default router;

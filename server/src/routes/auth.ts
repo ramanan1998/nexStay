@@ -4,6 +4,7 @@ import { userModel } from "../models/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { verifyToken } from "../middleware/auth";
+import { login, logout, verifyTokenController } from "../controllers/auth-controller";
 
 
 const router = express.Router();
@@ -14,55 +15,10 @@ const validateLoginBody = [
     check("password", "Password with 6 or more characters required").isLength({ min: 6 }),
 ]
 
-router.post("/login", validateLoginBody, async (req: Request, res: Response) => {
-    const errors = validationResult(req);
+router.post("/login", validateLoginBody, login);
 
-    if(!errors.isEmpty()){
-        return res.status(400).json({ message: errors.array() });
-    }
+router.get("/validate-token", verifyToken, verifyTokenController)
 
-    try{
-
-        const { email, password } = req.body;
-
-        const isUserExist = await userModel.findOne({ email });
-
-        if(!isUserExist){
-            return res.status(400).json({ message: "Email does not exist" });
-        }
-
-        const isPasswordValid = await bcrypt.compare(password, isUserExist.password);
-
-        if(!isPasswordValid){
-            return res.status(400).json({ message: "Wrong password" });
-        }
-
-        const token = jwt.sign({ userId: isUserExist.id }, process.env.JWT_SECRET_KEY as string, { expiresIn: "1d" });
-
-        res.cookie("authToken", token, { 
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 86400000 
-        });
-
-        res.status(200).json({ userId: isUserExist.id })
-
-    }catch(error){
-        console.log(error);
-        res.status(500).json({ message: "internal server error" })
-    }
-});
-
-router.get("/validate-token", verifyToken, (req: Request, res: Response) => {
-    res.status(200).send({ userId: req.userId })
-})
-
-router.get("/logout", (req: Request, res: Response) => {
-    res.cookie("authToken", "", {
-        expires: new Date(0)
-    })
-
-    res.status(200).send({ message: "Signout successful" })
-})
+router.get("/logout", logout)
 
 export default router;
