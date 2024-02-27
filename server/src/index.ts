@@ -1,13 +1,17 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import { connectDB } from "./configs/dbconfig";
 import userRoutes from "./routes/users";
 import authRoutes from "./routes/auth";
+import myHotelsRoutes from "./routes/my-hotels";
 import cookieParser from "cookie-parser";
 import path from "path";
+import { connectCloudinary } from "./configs/cloudinary-config";
 
 connectDB();
+
+connectCloudinary();
 
 const app = express();
 
@@ -34,6 +38,7 @@ app.use(express.static(path.join(__dirname, "../../client/dist")))
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/my-hotels", myHotelsRoutes);
 
 app.listen(5000, () => {
     console.log("server listening to port 5000")
