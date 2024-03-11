@@ -187,13 +187,13 @@ function Register() {
                     </label>
                 </div>
                 <div>
-                    <Link to="/sign-in" className="text-sm font-bold text-blue-800 hover:underline">Already have an account? Sign In</Link>
+                    <Link to="/sign-in" className="text-sm font-bold text-primary-blue hover:underline">Already have an account? Sign In</Link>
                 </div>
             </div>
             <Button 
                 type="submit" 
                 size="sm" 
-                className="bg-blue-800 text-white hover:bg-blue-900 w-full"
+                className="bg-primary-blue text-white hover:bg-dark-blue w-full"
                 isLoading={isPending}
             >
                 Submit

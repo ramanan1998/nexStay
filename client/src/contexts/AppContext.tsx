@@ -9,6 +9,8 @@ type AppContextType = {
     showToast: (toastMessage: ToastMessage) => void,
     closeToast: () => void,
     isLoggedIn: boolean,
+    userId: string,
+    role: string
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -19,7 +21,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
     const closeToast = useCallback(() => setToast(null), []);
 
-    const { isSuccess } = useQuery({
+    const { data } = useQuery({
         queryKey: [ "validateToken" ],
         queryFn: validateToken,
         retry: 0
@@ -30,7 +32,9 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
             value={{
                 showToast: (toastMessage) => setToast(toastMessage),
                 closeToast: closeToast,
-                isLoggedIn: isSuccess
+                isLoggedIn: data?.success,
+                userId: data?.userId,
+                role: data?.role
             }}
         >
             {children}

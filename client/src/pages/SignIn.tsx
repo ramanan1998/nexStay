@@ -121,13 +121,13 @@ function SignIn() {
                     </label> */}
                 </div>
                 <div>
-                    <Link to="/register" className="text-sm font-bold text-blue-800 hover:underline">Don't have an account? Register</Link>
+                    <Link to="/register" className="text-sm font-bold text-primary-blue hover:underline">Don't have an account? Register</Link>
                 </div>
             </div>
             <Button 
                 type="submit" 
                 size="md" 
-                className="bg-blue-800 text-white hover:bg-blue-900 w-full"
+                className="bg-primary-blue text-white hover:bg-dark-blue w-full"
                 isLoading={isPending}
             >
                 Submit

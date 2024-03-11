@@ -2,10 +2,12 @@ import { signOutUser } from "@/apis/api-client"
 import { useAppContext } from "@/contexts/AppContext"
 import { Button } from "@nextui-org/react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useNavigate } from "react-router-dom";
 
 function SignoutButton() {
 
   const { showToast } = useAppContext();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
@@ -14,6 +16,7 @@ function SignoutButton() {
         await queryClient.invalidateQueries({
             queryKey: [ "validateToken" ]
         });
+        navigate("/");
         return showToast({
             type: "SUCCESS",
             title: "Success",
@@ -30,7 +33,7 @@ function SignoutButton() {
   })
   return (
     <Button onClick={() => mutate()} variant="faded">
-        Sign Out
+      Sign Out
     </Button>
   )
 }
