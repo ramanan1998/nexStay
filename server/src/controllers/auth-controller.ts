@@ -44,7 +44,7 @@ export const login = async (req: Request, res: Response) => {
 }
 
 export const verifyTokenController = (req: Request, res: Response) => {
-    res.status(200).send({ userId: req.userId })
+    res.status(200).json({ userId: req.userId, success: true, role: "user" })
 }
 
 export const logout = (req: Request, res: Response) => {
