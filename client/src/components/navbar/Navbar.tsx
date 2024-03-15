@@ -5,7 +5,7 @@ import SignoutButton from "./SignoutButton";
 
 function Navbar() {
 
-  const { isLoggedIn } = useAppContext();
+  const { authData } = useAppContext();
 
   return (
     <nav className="bg-primary-blue pb-12 pt-5 px-2">
@@ -14,7 +14,7 @@ function Navbar() {
                 <Link to="/">nexStay</Link>
             </span>
 
-            {isLoggedIn ? (
+            {authData.isLoggedIn ? (
               <div className="space-x-10">
                 <Link to="/">
                   <span className="text-1xl text-white font-medium tracking-tight">

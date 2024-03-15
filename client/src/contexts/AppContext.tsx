@@ -8,9 +8,10 @@ import { ReactNode, createContext, useCallback, useContext, useState } from "rea
 type AppContextType = {
     showToast: (toastMessage: ToastMessage) => void,
     closeToast: () => void,
-    isLoggedIn: boolean,
-    userId: string,
-    role: string
+    isTokenValidationSuccess: boolean,
+    isTokenValidationLoading: boolean,
+    isTokenValidationError: boolean,
+    authData: { isLoggedIn: boolean, userId: string, role: string },
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -21,7 +22,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
     const closeToast = useCallback(() => setToast(null), []);
 
-    const { data } = useQuery({
+    const { data, isSuccess: isTokenValidationSuccess, isLoading: isTokenValidationLoading, isError: isTokenValidationError } = useQuery({
         queryKey: [ "validateToken" ],
         queryFn: validateToken,
         retry: 0
@@ -32,9 +33,10 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
             value={{
                 showToast: (toastMessage) => setToast(toastMessage),
                 closeToast: closeToast,
-                isLoggedIn: data?.success,
-                userId: data?.userId,
-                role: data?.role
+                isTokenValidationSuccess,
+                isTokenValidationLoading,
+                isTokenValidationError,
+                authData: { isLoggedIn: data?.success, role: data?.role, userId: data?.userId }
             }}
         >
             {children}
