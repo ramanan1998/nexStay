@@ -8,7 +8,7 @@ function Navbar() {
   const { authData } = useAppContext();
 
   return (
-    <nav className="bg-primary-blue pb-12 pt-5 px-2">
+    <nav className="bg-primary-blue py-5 px-2">
         <div className="container mx-auto flex items-center justify-between">
             <span className="text-3xl text-white font-bold tracking-tight">
                 <Link to="/">nexStay</Link>
