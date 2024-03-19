@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 // cors is a third-party middleware
 // it enables CORS (cross-origin resource sharing). In order for your server to be accessible by other origins (domains).
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
+    origin: [ process.env.FRONTEND_URL as string, process.env.NODE_ENV === "dev" && "http://localhost:5173" ],
     credentials: true
 }));
 
