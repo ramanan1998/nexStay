@@ -8,7 +8,7 @@ function PrimarySection() {
   const { register, formState: { errors }, setValue, watch } = useFormContext<ManageHotelFormType>();
 
   return (
-      <div className="container py-5 space-y-5">
+      <div className="py-5 space-y-5">
         <div className="w-full">
             <label htmlFor="name" className="block mb-1 font-bold text-gray-900 dark:text-white">Hotel name <span className="text-red-500">*</span></label>
             <Input 
@@ -129,6 +129,7 @@ function PrimarySection() {
             <div className="flex items-center gap-5">
               {[1, 2, 3, 4, 5].map(button => (
                 <Button
+                  type="button"
                   className={button <= watch("ratings") ? "bg-primary-blue hover:bg-primary-blue" : "text-black" } 
                   key={button} 
                   onClick={() => {

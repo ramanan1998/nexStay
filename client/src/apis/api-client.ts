@@ -1,6 +1,6 @@
 import { RegisterFormType, SignInFormType } from "@/types"
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as ImportMeta || "";
+export const API_BASE_URL = import.meta.env.VITE_NODE_ENV === "dev" ? "http://localhost:5000" : import.meta.env.VITE_API_BASE_URL;
 
 export const registerUser = async (formdata: RegisterFormType) => {
     const response = await fetch(`${API_BASE_URL}/api/users/register`, {

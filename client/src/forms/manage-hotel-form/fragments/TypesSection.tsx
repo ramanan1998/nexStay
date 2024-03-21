@@ -23,15 +23,13 @@ function TypesSection() {
 
   const { register, watch, formState: { errors } } = useFormContext<ManageHotelFormType>();
 
-  console.log(watch("type"))
-
-
   return (
-    <div className="container">
+    <div>
         <label className="block mb-2 font-bold text-gray-900 dark:text-white">Hotel type <span className="text-red-500">*</span></label>
         <div className="grid grid-cols-5 gap-x-12 gap-y-5">
-            {hotelTypelist.map(item => (
-                <label 
+            {hotelTypelist.map(item => (    
+                <label
+                    key={item} 
                     className={watch("type") === item ? "py-3 bg-primary-blue rounded-3xl text-white text-center cursor-pointer transition-all ease-in" : "py-3 bg-slate-200 rounded-3xl text-black text-center cursor-pointer"}
                     htmlFor={item}
                 >
