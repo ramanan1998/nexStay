@@ -1,12 +1,14 @@
 import { Icons } from "@/assets/icons"
 import useToggle from "@/hooks/useToggle";
-import { Button, Input } from "@nextui-org/react"
 import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form";
 import { SignInFormType } from "@/types";
 import { signInUser } from "@/apis/api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppContext } from "@/contexts/AppContext";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Eye, EyeOff } from "lucide-react";
 
 function SignIn() {
 
@@ -51,7 +53,6 @@ function SignIn() {
             <div className="mb-5">
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                 <Input 
-                    size="sm"
                     type="email" 
                     id="email" 
                     placeholder="name@xmail.com" 
@@ -71,32 +72,30 @@ function SignIn() {
             </div>
             <div className="mb-5">
                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
-                <Input 
-                    size="sm"
-                    id="password" 
-                    required
-                    type={isPasswordVisible ? "text" : "password"} 
-                    endContent={
-                        <button className="focus:outline-none" type="button" onClick={():void => togglePasswordVisibility()}>
-                            {isPasswordVisible ? (
-                                <Icons.EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                            ) : (
-                                <Icons.EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                            )}
-                        </button>
+                <div className="flex flex-row items-center relative">
+                    <Input 
+                        id="password" 
+                        required
+                        type={isPasswordVisible ? "text" : "password"} 
+                        placeholder="*******"
+                        {...register("password", {
+                            required: {
+                                value: true,
+                                message: "password is required"
+                            },
+                            minLength: {
+                                value: 6,
+                                message: "password must be atleast 6 characters"
+                            }
+                        })} 
+                        
+                    />
+                    {isPasswordVisible ? 
+                        <Eye onClick={() => togglePasswordVisibility()} className="text-slate-400 absolute cursor-pointer right-3" />
+                    :
+                        <EyeOff onClick={() => togglePasswordVisibility()} className="text-slate-400 absolute cursor-pointer right-3" />
                     }
-                    {...register("password", {
-                        required: {
-                            value: true,
-                            message: "password is required"
-                        },
-                        minLength: {
-                            value: 6,
-                            message: "password must be atleast 6 characters"
-                        }
-                    })} 
-                    
-                />
+                </div>
                 <p className="text-xs mt-1 font-medium text-red-500">{errors?.password?.message}</p>
             </div>
             <div className="flex items-center justify-between mb-5">
@@ -126,11 +125,10 @@ function SignIn() {
             </div>
             <Button 
                 type="submit" 
-                size="md" 
                 className="bg-primary-blue text-white hover:bg-dark-blue w-full"
-                isLoading={isPending}
+                disabled={isPending}
             >
-                Submit
+                {isPending ? <Icons.spinner/> : "Sign in"}
             </Button>
             <div className="flex flex-row items-center mt-4 gap-2">
                 <div className="w-full h-[1px] bg-slate-300"></div>

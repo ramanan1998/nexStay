@@ -1,8 +1,9 @@
 import { signOutUser } from "@/apis/api-client"
 import { useAppContext } from "@/contexts/AppContext"
-import { Button } from "@nextui-org/react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
+import { Icons } from "@/assets/icons";
 
 function SignoutButton() {
 
@@ -10,7 +11,7 @@ function SignoutButton() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: signOutUser,
     onSuccess: async (response) => {
         await queryClient.invalidateQueries({
@@ -32,8 +33,8 @@ function SignoutButton() {
     }
   })
   return (
-    <Button onClick={() => mutate()} variant="faded">
-      Sign Out
+    <Button onClick={() => mutate()} variant="secondary">
+      {isPending ? <Icons.spinner/> : "Sign Out"}
     </Button>
   )
 }

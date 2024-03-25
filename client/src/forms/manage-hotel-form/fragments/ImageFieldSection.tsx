@@ -24,7 +24,6 @@ function ImageFieldSection() {
                         className="hidden" 
                         type="file" 
                         id="imageFiles"
-                        required
                         multiple
                         accept="image/*"
                         {...register("imageFiles", {

@@ -1,7 +1,9 @@
-import { Button, Input, Textarea } from "@nextui-org/react";
 import { useFormContext } from "react-hook-form"
 import { ManageHotelFormType } from "../ManageHotelForm";
 import { Star } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 function PrimarySection() {
 
@@ -12,15 +14,10 @@ function PrimarySection() {
         <div className="w-full">
             <label htmlFor="name" className="block mb-1 font-bold text-gray-900 dark:text-white">Hotel name <span className="text-red-500">*</span></label>
             <Input 
-                size="sm"
                 type="text" 
                 id="name"
-                variant="bordered" 
                 placeholder="Hotel name" 
                 required
-                classNames={{
-                  inputWrapper: [ "data-[hover=true]:border-primary-blue", "group-data-[focus=true]:border-primary-blue" ]
-                }}
                 {...register("name", {
                     required: {
                       value: true,
@@ -35,15 +32,10 @@ function PrimarySection() {
           <div className="w-full">
               <label htmlFor="city" className="block mb-1 font-bold text-gray-900 dark:text-white">City <span className="text-red-500">*</span></label>
               <Input 
-                  size="sm"
                   type="text" 
                   id="city"
-                  variant="bordered" 
                   placeholder="City" 
                   required
-                  classNames={{
-                    inputWrapper: [ "data-[hover=true]:border-primary-blue", "group-data-[focus=true]:border-primary-blue" ]
-                  }}
                   {...register("city", {
                       required: {
                         value: true,
@@ -56,15 +48,10 @@ function PrimarySection() {
           <div className="w-full">
               <label htmlFor="country" className="block mb-1 font-bold text-gray-900 dark:text-white">Country <span className="text-red-500">*</span></label>
               <Input 
-                  size="sm"
                   type="text" 
                   id="country"
-                  variant="bordered" 
                   placeholder="Country" 
                   required
-                  classNames={{
-                    inputWrapper: [ "data-[hover=true]:border-primary-blue", "group-data-[focus=true]:border-primary-blue" ]
-                  }}
                   {...register("country", {
                       required: {
                         value: true,
@@ -79,17 +66,10 @@ function PrimarySection() {
         <div>
             <label htmlFor="description" className="block mb-1 font-bold text-gray-900 dark:text-white">Description <span className="text-red-500">*</span></label>
             <Textarea 
-                minRows={5}
-                maxRows={10}
-                size="sm"
-                type="text" 
+                rows={5}
                 id="description"
-                variant="bordered" 
                 placeholder="Add description..." 
                 required
-                classNames={{
-                  inputWrapper: [ "data-[hover=true]:border-primary-blue", "group-data-[focus=true]:border-primary-blue" ]
-                }}
                 {...register("description", {
                     required: {
                       value: true,
@@ -103,15 +83,10 @@ function PrimarySection() {
           <div>
             <label htmlFor="pricePerNight" className="block mb-1 font-bold text-gray-900 dark:text-white">Price per night <span className="text-red-500">*</span></label>
             <Input 
-                size="sm"
                 type="number" 
                 id="pricePerNight"
-                variant="bordered" 
                 placeholder="Price per night" 
                 required
-                classNames={{
-                  inputWrapper: [ "data-[hover=true]:border-primary-blue", "group-data-[focus=true]:border-primary-blue" ]
-                }}
                 min={1}
                 max={1000000}
                 {...register("pricePerNight", {
@@ -130,7 +105,8 @@ function PrimarySection() {
               {[1, 2, 3, 4, 5].map(button => (
                 <Button
                   type="button"
-                  className={button <= watch("ratings") ? "bg-primary-blue hover:bg-primary-blue" : "text-black" } 
+                  variant="ghost"
+                  className={button <= watch("ratings") ? "bg-primary-blue hover:bg-primary-blue rounded-full" : "text-black rounded-full" } 
                   key={button} 
                   onClick={() => {
                     if(watch("ratings") === button){
@@ -139,16 +115,9 @@ function PrimarySection() {
                       setValue("ratings", button)
                     }
                   }} 
-                  isIconOnly 
-                  {...register("ratings", {
-                    validate: (value) => {
-                      if(value === 0){
-                        return "Star rating is required"
-                      }
-                    }
-                  })}
+                  {...register("ratings")}
                 >
-                  <Star className={button <= watch("ratings") ? "text-white" : "text-black" } />
+                  <Star className={button <= watch("ratings") ? "text-white h-3 w-3" : "text-black h-3 w-3" } />
                 </Button>
               ))}
             </div>

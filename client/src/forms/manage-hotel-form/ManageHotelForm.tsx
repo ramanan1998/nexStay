@@ -4,7 +4,8 @@ import TypesSection from "./fragments/TypesSection";
 import FacilitiesSection from "./fragments/FacilitiesSection";
 import GuestsSection from "./fragments/GuestsSection";
 import ImageFieldSection from "./fragments/ImageFieldSection";
-import { Button } from "@nextui-org/react";
+import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 export type ManageHotelFormType = {
   name: string,
@@ -32,7 +33,12 @@ function ManageHotelForm() {
     }
   });
 
-  const { handleSubmit } = formState;
+  const { handleSubmit, watch } = formState;
+
+  useEffect(() => {
+    const subscribe = watch((value) => console.log(value));
+    return () => subscribe.unsubscribe();
+  }, [ watch ])
 
   const submit = handleSubmit(data => {
     console.log(data)
@@ -48,7 +54,7 @@ function ManageHotelForm() {
         <GuestsSection/>
         <ImageFieldSection/>
         <div className="mb-10 flex items-center justify-end">
-          <Button color="primary" type="submit">Submit</Button>
+          <Button type="submit">Submit</Button>
         </div>
       </form>
     </FormProvider>
