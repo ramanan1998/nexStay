@@ -4,8 +4,8 @@ import TypesSection from "./fragments/TypesSection";
 import FacilitiesSection from "./fragments/FacilitiesSection";
 import GuestsSection from "./fragments/GuestsSection";
 import ImageFieldSection from "./fragments/ImageFieldSection";
-import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { Icons } from "@/assets/icons";
 
 export type ManageHotelFormType = {
   name: string,
@@ -14,7 +14,7 @@ export type ManageHotelFormType = {
   description: string,
   type: string,
   pricePerNight: number,
-  ratings: number,
+  rating: number,
   facilities: string[],
   imageFiles: FileList,
   adultCount: number,
@@ -22,7 +22,12 @@ export type ManageHotelFormType = {
   infantCount: number
 }
 
-function ManageHotelForm() {
+interface Props {
+  onSave: (data: FormData) => void,
+  isPending: boolean
+}
+
+function ManageHotelForm(props: Props) {
 
   const formState = useForm<ManageHotelFormType>({
     defaultValues: {
@@ -33,15 +38,26 @@ function ManageHotelForm() {
     }
   });
 
-  const { handleSubmit, watch } = formState;
-
-  useEffect(() => {
-    const subscribe = watch((value) => console.log(value));
-    return () => subscribe.unsubscribe();
-  }, [ watch ])
+  const { handleSubmit } = formState;
 
   const submit = handleSubmit(data => {
-    console.log(data)
+    
+    const formdata = new FormData();
+    formdata.append("name", data.name);
+    formdata.append("city", data.city);
+    formdata.append("country", data.country);
+    formdata.append("description", data.description);
+    formdata.append("pricePerNight", data.pricePerNight.toString());
+    formdata.append("rating", data.rating.toString());
+    formdata.append("adultCount", data.adultCount.toString());
+    formdata.append("childrenCount", data.childCount.toString());
+    formdata.append("infantCount", data.infantCount.toString());
+    formdata.append("type", data.type);
+
+    data.facilities.forEach((facility, index) => formdata.append(`facilities[${index}]`, facility));
+    Array.from(data.imageFiles).forEach((image) => formdata.append("imageFiles", image));
+    
+    props.onSave(formdata);
   })
 
   return (
@@ -54,7 +70,12 @@ function ManageHotelForm() {
         <GuestsSection/>
         <ImageFieldSection/>
         <div className="mb-10 flex items-center justify-end">
-          <Button type="submit">Submit</Button>
+          <Button 
+            type="submit"
+            disabled={props.isPending}
+          >
+            {props.isPending ? <Icons.spinner className="h-5 w-5 animate-spin" /> : "Submit"}
+          </Button>
         </div>
       </form>
     </FormProvider>

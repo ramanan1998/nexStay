@@ -17,7 +17,6 @@ function PrimarySection() {
                 type="text" 
                 id="name"
                 placeholder="Hotel name" 
-                required
                 {...register("name", {
                     required: {
                       value: true,
@@ -35,7 +34,6 @@ function PrimarySection() {
                   type="text" 
                   id="city"
                   placeholder="City" 
-                  required
                   {...register("city", {
                       required: {
                         value: true,
@@ -51,7 +49,6 @@ function PrimarySection() {
                   type="text" 
                   id="country"
                   placeholder="Country" 
-                  required
                   {...register("country", {
                       required: {
                         value: true,
@@ -69,7 +66,6 @@ function PrimarySection() {
                 rows={5}
                 id="description"
                 placeholder="Add description..." 
-                required
                 {...register("description", {
                     required: {
                       value: true,
@@ -86,7 +82,6 @@ function PrimarySection() {
                 type="number" 
                 id="pricePerNight"
                 placeholder="Price per night" 
-                required
                 min={1}
                 max={1000000}
                 {...register("pricePerNight", {
@@ -100,28 +95,28 @@ function PrimarySection() {
           </div>
 
           <div>
-            <label htmlFor="ratings" className="block mb-1 font-bold text-gray-900 dark:text-white">Star rating <span className="text-red-500">*</span></label>
+            <label htmlFor="rating" className="block mb-1 font-bold text-gray-900 dark:text-white">Star rating <span className="text-red-500">*</span></label>
             <div className="flex items-center gap-5">
               {[1, 2, 3, 4, 5].map(button => (
                 <Button
                   type="button"
                   variant="ghost"
-                  className={button <= watch("ratings") ? "bg-primary-blue hover:bg-primary-blue rounded-full" : "text-black rounded-full" } 
+                  className={button <= watch("rating") ? "bg-primary-blue hover:bg-primary-blue rounded-full" : "text-black rounded-full" } 
                   key={button} 
                   onClick={() => {
-                    if(watch("ratings") === button){
-                      setValue("ratings", 0)
+                    if(watch("rating") === button){
+                      setValue("rating", 0)
                     }else{
-                      setValue("ratings", button)
+                      setValue("rating", button)
                     }
                   }} 
-                  {...register("ratings")}
+                  {...register("rating")}
                 >
-                  <Star className={button <= watch("ratings") ? "text-white h-3 w-3" : "text-black h-3 w-3" } />
+                  <Star className={button <= watch("rating") ? "text-white h-3 w-3" : "text-black h-3 w-3" } />
                 </Button>
               ))}
             </div>
-            <p className="text-xs mt-1 font-medium text-red-500">{errors?.ratings?.message}</p>
+            <p className="text-xs mt-1 font-medium text-red-500">{errors?.rating?.message}</p>
           </div>
         </div>
       </div>

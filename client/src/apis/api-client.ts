@@ -75,3 +75,17 @@ export const validateToken = async () => {
 
     return json;
 }
+
+// add hotel
+
+export const createNewHotel = async (formdata: FormData) => {
+    const response = await fetch(`${API_BASE_URL}/api/my-hotels`, {
+        method: "POST",
+        credentials: "include",
+        body: formdata
+    });
+
+    const json = await response.json();
+
+    return json;
+}
