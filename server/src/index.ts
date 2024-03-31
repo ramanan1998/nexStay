@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import { connectDB } from "./configs/dbconfig";
@@ -39,6 +39,10 @@ app.use(express.static(path.join(__dirname, "../../client/dist")))
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/my-hotels", myHotelsRoutes);
+
+app.get("*", (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, "../../client/dist/index.html"))
+})
 
 app.listen(5000, () => {
     console.log("server listening to port 5000")
