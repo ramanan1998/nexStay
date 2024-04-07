@@ -40,3 +40,47 @@ export const createHotel = async (req: Request, res: Response) => {
         res.status(500).json({ message: error });
     }
 }
+
+export const getAllHotels = async (req: Request, res: Response) => {
+    try{
+
+        const hotels = await HotelModel.find({ userId: req.userId });
+        
+        res.status(200).json(hotels);
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({ message: "internal server error" });
+    }
+}
+
+export const getHotelById = async (req: Request, res: Response) => {
+    try{
+
+        const hotel = await HotelModel.find({ userId: req.userId, _id: req.params.id });
+        res.status(200).json(hotel);
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({ message: "internal server error" });
+    }
+}
+
+export const deleteHotelById = async (req: Request, res: Response) => {
+    try{
+
+        const hotel = await HotelModel.find({ userId: req.userId, _id: req.params.id });
+
+        if(!!hotel.length){
+            await HotelModel.deleteOne({ userId: req.userId, _id: req.params.id });
+            res.status(200).json({ message: "Hotel deleted successfully" });
+        }else{
+            res.status(400).json({ message: "Hotel name doesn't exist" });
+        }
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({ message: "internal server error" });
+    }
+}
+

@@ -1,16 +1,10 @@
 import { Request, Response } from "express";
-import { validationResult } from "express-validator";
 import { userModel } from "../models/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export const login = async (req: Request, res: Response) => {
-    const errors = validationResult(req);
-
-    if(!errors.isEmpty()){
-        return res.status(400).json({ message: errors.array() });
-    }
-
+    
     try{
 
         const { email, password } = req.body;

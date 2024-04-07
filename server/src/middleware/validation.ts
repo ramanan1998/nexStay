@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { check, validationResult } from "express-validator";
+import { check, param, validationResult } from "express-validator";
 
 export const validateRegisterBody = [
     check("firstname", "First name is required").isString(),
@@ -29,4 +29,17 @@ export const validateLoginBody = [
         }
         next();
     },
+]
+
+export const validateHotelId = [
+    param("id")
+        .isLength({ min: 24, max: 24})
+        .withMessage("id must be a 24 character hex string"),
+    (req: Request, res: Response, next: NextFunction) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()){
+            return res.status(422).json({errors: errors.array()});
+        }
+        next();
+    }
 ]

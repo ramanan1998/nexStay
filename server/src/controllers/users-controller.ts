@@ -1,15 +1,9 @@
 import { Request, Response } from "express";
-import { validationResult } from "express-validator";
 import { userModel } from "../models/user";
 import jwt from "jsonwebtoken";
 
 export const register = async (req: Request, res: Response) => {
 
-    const bodyValidatedArray = validationResult(req);
-
-    if(!bodyValidatedArray.isEmpty()){
-        return res.status(400).json({ message: bodyValidatedArray.array() })
-    }
     try{
 
         const { email } = req.body;
