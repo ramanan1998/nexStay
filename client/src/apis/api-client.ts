@@ -1,8 +1,5 @@
-import { RegisterFormType, SignInFormType } from "@/types"
+import { HotelType, RegisterFormType, SignInFormType } from "@/types"
 
-interface ImportMeta {
-    readonly env: ImportMeta
-}
 
 export const API_BASE_URL = import.meta.env.VITE_NODE_ENV === "dev" ? "http://localhost:5000" : import.meta.env.VITE_API_BASE_URL as ImportMeta;
 
@@ -90,6 +87,23 @@ export const createNewHotel = async (formdata: FormData) => {
     });
 
     const json = await response.json();
+
+    return json;
+}
+
+// get all hotels
+
+export const getAllHotels = async (): Promise<HotelType[]> => {
+    const response = await fetch(`${API_BASE_URL}/api/my-hotels`, {
+        method: "GET",
+        credentials: "include",
+    });
+
+    const json = await response.json();
+
+    if(!response.ok){
+        throw json.message
+    }
 
     return json;
 }

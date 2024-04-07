@@ -5,6 +5,7 @@ import SignIn from "./pages/SignIn"
 import { useAppContext } from "./contexts/AppContext"
 import AddHotel from "./pages/AddHotel"
 import HoneyCombLoader from "./components/loader/HoneyCombLoader"
+import MyHotels from "./pages/MyHotels"
 
 function App() {
 
@@ -32,7 +33,10 @@ function App() {
         <Route path="/" element={<Layout/>}>
           <Route index element={<h1>Home</h1>}/>
           {authData.isLoggedIn && authData.role === "user" && (
-            <Route path="add-hotel" element={<AddHotel/>}/>
+            <>
+              <Route path="add-hotel" element={<AddHotel/>}/>
+              <Route path="my-hotels" element={<MyHotels/>}/>
+            </>
           )}
         </Route>
         <Route path="/register" element={<Register/>}/>
