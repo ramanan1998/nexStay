@@ -16,7 +16,7 @@ function Navbar() {
 
             {authData.isLoggedIn ? (
               <div className="space-x-10">
-                <Link to="/">
+                <Link to="/my-hotels">
                   <span className="text-1xl text-white font-medium tracking-tight">
                     My Hotels
                   </span>

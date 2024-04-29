@@ -14,6 +14,10 @@ const hotelSchema = new mongoose.Schema<HotelType>({
         required: true,
         type: String
     },
+    country: {
+        required: true,
+        type: String
+    },
     description: {
         required: true,
         type: String
