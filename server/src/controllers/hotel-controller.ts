@@ -57,7 +57,7 @@ export const getAllHotels = async (req: Request, res: Response) => {
 export const getHotelById = async (req: Request, res: Response) => {
     try{
 
-        const hotel = await HotelModel.find({ userId: req.userId, _id: req.params.id });
+        const hotel = await HotelModel.find({ userId: req.userId, _id: req.params.id.toString() });
         res.status(200).json(hotel);
 
     }catch(error){

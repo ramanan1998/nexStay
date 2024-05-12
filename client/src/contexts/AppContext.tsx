@@ -36,7 +36,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
                 isTokenValidationSuccess,
                 isTokenValidationLoading,
                 isTokenValidationError,
-                authData: { isLoggedIn: data?.success, role: data?.role, userId: data?.userId }
+                authData: { isLoggedIn: data?.data?.success, role: data?.data?.role, userId: data?.data?.userId }
             }}
         >
             {children}

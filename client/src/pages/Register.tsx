@@ -31,7 +31,7 @@ function Register() {
         showToast({
             type: "SUCCESS",
             title: "Yayy!! Registration Success",
-            message: response.message
+            message: response.data.message
         })
         return navigate("/");
     },
