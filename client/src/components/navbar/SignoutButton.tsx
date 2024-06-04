@@ -21,7 +21,7 @@ function SignoutButton() {
         return showToast({
             type: "SUCCESS",
             title: "Success",
-            message: response.message
+            message: response.data.message
         })
     },
     onError: (error) => {

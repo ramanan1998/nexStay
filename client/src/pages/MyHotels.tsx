@@ -12,6 +12,7 @@ import { MoreVertical, Star } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+
 function MyHotels() {
 
   const { showToast } = useAppContext();
@@ -62,7 +63,7 @@ function MyHotels() {
   if(isSuccess){
     content = (
       <div className="mt-5 grid grid-cols-4 gap-5">
-        {data?.map(hotel => (
+        {data?.data?.map(hotel => (
           <Card key={hotel._id} className="overflow-hidden">
             <CardHeader className="p-0 relative">
               <Carousel className="w-full">

@@ -1,111 +1,86 @@
 import { HotelType, RegisterFormType, SignInFormType } from "@/types"
+import axios, { AxiosResponse } from "axios";
 
 
 export const API_BASE_URL = import.meta.env.VITE_NODE_ENV === "dev" ? "http://localhost:5000" : import.meta.env.VITE_API_BASE_URL as ImportMeta;
 
 export const registerUser = async (formdata: RegisterFormType) => {
-    const response = await fetch(`${API_BASE_URL}/api/users/register`, {
+
+    return await axios({
+        url: `${API_BASE_URL}/api/users/register`,
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        credentials: "include",
-        body: JSON.stringify(formdata)
-    });
+        withCredentials: true,
+        data: JSON.stringify(formdata)
+    })
 
-    const json = await response.json();
-
-    if(!response.ok){
-        throw new Error(json.message);
-    }
-
-    return json;
 }
 
 export const signInUser = async (formdata: SignInFormType) => {
-    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+    
+    return await axios({
+        url: `${API_BASE_URL}/api/auth/login`,
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        credentials: "include",
-        body: JSON.stringify(formdata)
-    });
-
-    const json = await response.json();
-
-    if(!response.ok){
-        throw new Error(json.message);
-    }
-
-    return json;
+        withCredentials: true,
+        data: JSON.stringify(formdata)
+    })
 }
 
 export const signOutUser = async () => {
-    const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
+    return await axios({
+        url: `${API_BASE_URL}/api/auth/logout`,
         method: "GET",
         headers: {
             "Content-Type": "application/json"
         },
-        credentials: "include",
-    });
-
-    const json = await response.json();
-
-    if(!response.ok){
-        throw new Error(json.message);
-    }
-
-    return json;
+        withCredentials: true,
+    })
 }
 
 export const validateToken = async () => {
-    const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
+    
+    return await axios({
+        url: `${API_BASE_URL}/api/auth/validate-token`,
         method: "GET",
-        credentials: "include",
         headers: {
             "Content-Type": "application/json"
-        }
-    });
-
-    const json = await response.json();
-
-    if(!response.ok){
-        throw new Error("Invalid Token");
-    }
-
-    return json;
+        },
+        withCredentials: true,
+    })
 }
 
 // add hotel
 
 export const createNewHotel = async (formdata: FormData) => {
-    const response = await fetch(`${API_BASE_URL}/api/my-hotels`, {
+    
+    return await axios({
+        url: `${API_BASE_URL}/api/my-hotels`,
         method: "POST",
-        credentials: "include",
-        body: formdata
-    });
-
-    const json = await response.json();
-
-    return json;
+        headers: {
+            "Content-Type": "application/json"
+        },
+        withCredentials: true,
+        data: formdata
+    })
 }
 
 // get all hotels
 
-export const getAllHotels = async (): Promise<HotelType[]> => {
-    const response = await fetch(`${API_BASE_URL}/api/my-hotels`, {
+export const getAllHotels = async (): Promise<AxiosResponse<HotelType[]>> => {
+   
+    return await axios({
+        url: `${API_BASE_URL}/api/my-hotels`,
         method: "GET",
-        credentials: "include",
-    });
-
-    const json = await response.json();
-
-    if(!response.ok){
-        throw json.message
-    }
-
-    return json;
+        headers: {
+            "Content-Type": "application/json"
+        },
+        withCredentials: true,
+    })
 }
 
 // get all hotels

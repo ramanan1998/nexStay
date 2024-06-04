@@ -29,7 +29,7 @@ function SignIn() {
         showToast({
             type: "SUCCESS",
             title: "Yayy! You are back!",
-            message: response.message
+            message: response.data.message
         })
         return navigate("/");
     },
