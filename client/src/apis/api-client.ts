@@ -107,3 +107,37 @@ export const getAllHotels = async (): Promise<HotelType[]> => {
 
     return json;
 }
+
+// get all hotels
+
+export const getHotelById = async (hotelId: string): Promise<HotelType> => {
+    const response = await fetch(`${API_BASE_URL}/api/my-hotels/${hotelId}`, {
+        method: "GET",
+        credentials: "include",
+    });
+
+    const json = await response.json();
+
+    if(!response.ok){
+        throw json.message
+    }
+
+    return json;
+}
+
+// delete hotel by id
+
+export const deleteHotelById = async (hotelId: string) => {
+    const response = await fetch(`${API_BASE_URL}/api/my-hotels/${hotelId}`, {
+        method: "DELETE",
+        credentials: "include",
+    });
+
+    const json = await response.json();
+
+    if(!response.ok){
+        throw json.message
+    }
+
+    return json;
+}

@@ -6,6 +6,7 @@ import { useAppContext } from "./contexts/AppContext"
 import AddHotel from "./pages/AddHotel"
 import HoneyCombLoader from "./components/loader/HoneyCombLoader"
 import MyHotels from "./pages/MyHotels"
+import EditHotel from "./pages/EditHotel"
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
           {authData.isLoggedIn && authData.role === "user" && (
             <>
               <Route path="add-hotel" element={<AddHotel/>}/>
+              <Route path="edit-hotel/:hotelId" element={<EditHotel/>}/>
               <Route path="my-hotels" element={<MyHotels/>}/>
             </>
           )}

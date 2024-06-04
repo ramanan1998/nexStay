@@ -6,6 +6,8 @@ import GuestsSection from "./fragments/GuestsSection";
 import ImageFieldSection from "./fragments/ImageFieldSection";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/assets/icons";
+import { HotelType } from "@/types";
+import { useEffect } from "react";
 
 export type ManageHotelFormType = {
   name: string,
@@ -24,7 +26,8 @@ export type ManageHotelFormType = {
 
 interface Props {
   onSave: (data: FormData) => void,
-  isPending: boolean
+  isPending: boolean,
+  defaultData?: HotelType
 }
 
 function ManageHotelForm(props: Props) {
@@ -38,7 +41,11 @@ function ManageHotelForm(props: Props) {
     }
   });
 
-  const { handleSubmit } = formState;
+  const { handleSubmit, reset } = formState;
+
+  useEffect(() => {
+    reset(props?.defaultData)
+  }, [ props?.defaultData, reset ])
 
   const submit = handleSubmit(data => {
     
