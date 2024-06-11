@@ -1,11 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { MoreVertical, Star } from 'lucide-react'
 import { Card, CardContent, CardHeader } from '../ui/card'
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel'
 import Autoplay from "embla-carousel-autoplay"
 import { HotelType } from '@/types'
-import { Button } from '../ui/button'
-import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, MenubarTrigger } from '../ui/menubar'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
 
 interface Props extends HotelType {}
 
@@ -18,7 +17,7 @@ function HotelCard(props: Props) {
                 plugins={[
                     Autoplay({
                         delay: 2000,
-                    })
+                    }) as any
                 ]}
             >
                 <CarouselContent>
