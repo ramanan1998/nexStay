@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import multer from "multer";
 import { verifyToken } from "../middleware/auth";
-import { createHotel, deleteHotelById, getAllHotels, getHotelById } from "../controllers/hotel-controller";
+import { createHotel, deleteHotelById, getAllHotels, getHotelById, updateHotel } from "../controllers/hotel-controller";
 import { validateHotelId } from "../middleware/validation";
 
 const router = express.Router();
@@ -31,6 +31,13 @@ router.get(
     verifyToken,
     validateHotelId,
     getHotelById
+)
+
+router.put(
+    "/:id",
+    verifyToken,
+    upload.array("imageFiles", 6),
+    updateHotel
 )
 
 router.delete(

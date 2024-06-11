@@ -62,7 +62,7 @@ export const createNewHotel = async (formdata: FormData) => {
         url: `${API_BASE_URL}/api/my-hotels`,
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "multipart/form-data"
         },
         withCredentials: true,
         data: formdata

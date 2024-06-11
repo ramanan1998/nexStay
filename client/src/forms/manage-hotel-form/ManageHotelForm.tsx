@@ -19,6 +19,7 @@ export type ManageHotelFormType = {
   rating: number,
   facilities: string[],
   imageFiles: FileList,
+  imageUrl: string[],
   adultCount: number,
   childCount: number,
   infantCount: number

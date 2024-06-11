@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { HotelType } from "../types";
 import { v2 as cloudinary } from "cloudinary";
 import { HotelModel } from "../models/hotel";
+import { uploadImage } from "../helpers/uploadImage";
 
 export const createHotel = async (req: Request, res: Response) => {
     try{
@@ -11,14 +12,7 @@ export const createHotel = async (req: Request, res: Response) => {
 
         // 1. upload the image to cloudinary
 
-        const uploadImage = imagesFiles.map(async (image) => {
-            const b64 = Buffer.from(image.buffer).toString("base64");           // convert the image to base64 image
-            const imageURI = "data:" + image.mimetype + ";base64," + b64;
-            const res = await cloudinary.uploader.upload(imageURI);
-            return res.url;
-        });
-
-        const uploadedImageUrls = await Promise.all(uploadImage);
+        const uploadedImageUrls = await uploadImage(imagesFiles);
 
         // 2. if upload was successful, add the url along the hotelData
 
@@ -59,6 +53,40 @@ export const getHotelById = async (req: Request, res: Response) => {
 
         const [ hotel ] = await HotelModel.find({ userId: req.userId, _id: req.params.id.toString() });
         res.status(200).json(hotel);
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({ message: "internal server error" });
+    }
+}
+
+export const updateHotel = async (req: Request, res: Response) => {
+    try{
+
+        const hotelId = req.params.id;
+        const hotelData = req.body as HotelType;
+        const imagesFiles = req.files as Express.Multer.File[];
+        hotelData.lastUpdated = new Date();
+
+        const hotel = await HotelModel.findOne({
+            _id: hotelId,
+            userId: req.userId
+        });
+
+        if (!hotel) {
+            return res.status(404).json({ message: "Hotel not found" });
+        }
+    
+        const updatedImageUrls = await uploadImage(imagesFiles);
+    
+        hotelData.imageUrl = [
+            ...updatedImageUrls,
+            ...(hotelData.imageUrl || [])
+        ];
+
+        await HotelModel.findOneAndUpdate({ _id: hotelId, userId: req.userId }, hotelData, { new: true });
+
+        return res.status(200).json({ message: "hotel updated successfully" });
 
     }catch(error){
         console.log(error);

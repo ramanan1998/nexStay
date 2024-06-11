@@ -1,15 +1,32 @@
 import { useFormContext } from "react-hook-form"
 import { ManageHotelFormType } from "../ManageHotelForm";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 
 function ImageFieldSection() {
 
-  const { register, formState: { errors }, watch } = useFormContext<ManageHotelFormType>();
+  const { register, formState: { errors }, watch, setValue } = useFormContext<ManageHotelFormType>();
 
+  const existingImage = watch("imageUrl");
+
+  const handleDelete = (url: string) => {
+    setValue("imageUrl", existingImage.filter(image => image !== url));
+  }
 
   return (
     <div>
         <div className="w-full">
             <label className="block mb-1 font-bold text-gray-900 dark:text-white">Upload Images <span className="text-red-500">*</span></label>
+            <div className="grid grid-cols-6">
+                {existingImage?.map((image, index) => (
+                    <div key={`hotel-img-${index}`} className="relative flex items-center justify-center group hover:brightness-50 cursor-pointer">
+                        <img className="h-full w-full object-cover" src={image} alt="hotel-img" />
+                        <Button onClick={() => handleDelete(image)} type="button" className="absolute rounded-full invisible group-hover:visible hover:bg-transparent" size="icon" variant="ghost">
+                            <Trash2 className="text-white" />
+                        </Button>
+                    </div>
+                ))}
+            </div>
             <div>
                 <label htmlFor="imageFiles" className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-slate-200 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -33,7 +50,7 @@ function ImageFieldSection() {
                                     return "Atleast one image should be added"
                                 }
 
-                                if(imageList.length > 6){
+                                if(imageList.length + existingImage?.length || 0 > 6){
                                     return "Image file should not exceed more than 6 images"
                                 }
 
