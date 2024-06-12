@@ -5,6 +5,7 @@ import { connectDB } from "./configs/dbconfig";
 import userRoutes from "./routes/users";
 import authRoutes from "./routes/auth";
 import myHotelsRoutes from "./routes/my-hotels";
+import hotelRoutes from "./routes/hotels";
 import cookieParser from "cookie-parser";
 import path from "path";
 import { connectCloudinary } from "./configs/cloudinary-config";
@@ -39,6 +40,7 @@ app.use(express.static(path.join(__dirname, "../../client/dist")))
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/my-hotels", myHotelsRoutes);
+app.use("/api/hotel", hotelRoutes);
 
 app.get("*", (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, "../../client/dist/index.html"))

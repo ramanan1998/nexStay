@@ -112,3 +112,19 @@ export const deleteHotelById = async (req: Request, res: Response) => {
     }
 }
 
+export const searchHotel = async (req: Request, res: Response) => {
+    try{
+
+        const page = 5;
+        const skip =(parseInt(req.query.page ? req.query.page.toString() : "1") - 1) * page;
+
+        const hotel = await HotelModel.find().skip(skip).limit(page);
+
+        console.log(hotel);
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({ message: "internal server error" });
+    }
+}
+
